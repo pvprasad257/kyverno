@@ -1,0 +1,19 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-cost-labels
+  annotations:
+    policies.kyverno.io/title: "Require Cost-Center Labels"
+spec:
+  rules:
+    - name: check-cost-label
+      match:
+        resources:
+          kinds:
+            - Namespace
+      validate:
+        message: "All namespaces must have a 'cost-center' label."
+        pattern:
+          metadata:
+            labels:
+              cost-center: env-prod
